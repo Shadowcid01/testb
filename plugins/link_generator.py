@@ -3,12 +3,12 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from bot import Bot
-from config import ADMINS, ENABLE_LINK_CREATION
+from config import ADMINS, AUTO_LINK_CREATION
 from helper_func import encode, get_message_id
 
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command('batch'))
 async def batch(client: Client, message: Message):
-    if not ENABLE_LINK_CREATION:
+    if not AUTO_LINK_CREATION:
         return  # Skip link creation if the feature is disabled
     
     while True:
@@ -45,7 +45,7 @@ async def batch(client: Client, message: Message):
 
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command('genlink'))
 async def link_generator(client: Client, message: Message):
-    if not ENABLE_LINK_CREATION:
+    if not AUTO_LINK_CREATION:
         return  # Skip link creation if the feature is disabled
     
     while True:
@@ -67,7 +67,7 @@ async def link_generator(client: Client, message: Message):
 
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command('batch_plus'))
 async def batch_plus(client: Client, message: Message):
-    if not ENABLE_LINK_CREATION:
+    if not AUTO_LINK_CREATION:
         return  # Skip link creation if the feature is disabled
 
     while True:
@@ -104,7 +104,7 @@ async def batch_plus(client: Client, message: Message):
 
 @Bot.on_message(filters.private & filters.user(ADMINS) & filters.command('batch_pro'))
 async def batch_pro(client: Client, message: Message):
-    if not ENABLE_LINK_CREATION:
+    if not AUTO_LINK_CREATION:
         return  # Skip link creation if the feature is disabled
 
     # Step 1: Get the first message
