@@ -6,11 +6,13 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait
 
 from bot import Bot
-from config import ADMINS, CHANNEL_ID, DISABLE_CHANNEL_BUTTON
+from config import ADMINS, CHANNEL_ID, DISABLE_CHANNEL_BUTTON, AUTO_LINK_CREATION
 from helper_func import encode
 
-@Bot.on_message(filters.private & filters.user(ADMINS) & ~filters.command(['start','users','broadcast','batch','genlink','stats','custom_batch']))
+@Bot.on_message(filters.private & filters.user(ADMINS) & ~filters.command(['start','users','broadcast','batch','genlink','stats','batch_plus','batch_pro']))
 async def channel_post(client: Client, message: Message):
+    if not AUTO_LINK_CREATION:
+        return  # Skip link creation if the feature is disabled
     reply_text = await message.reply_text("Please Wait...!", quote = True)
     try:
         post_message = await message.copy(chat_id = client.db_channel.id, disable_notification=True)
@@ -36,8 +38,8 @@ async def channel_post(client: Client, message: Message):
 @Bot.on_message(filters.channel & filters.incoming & filters.chat(CHANNEL_ID))
 async def new_post(client: Client, message: Message):
 
-    if DISABLE_CHANNEL_BUTTON:
-        return
+    if not AUTO_LINK_CREATION or DISABLE_CHANNEL_BUTTON:
+        return  # Skip link creation if the feature is disabled or button is disabled
 
     converted_id = message.id * abs(client.db_channel.id)
     string = f"get-{converted_id}"
